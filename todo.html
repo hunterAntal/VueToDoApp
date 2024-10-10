@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js To-Do List</title>
+  <!-- Include Vue.js from a CDN for easy access to Vue functionalities -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body> 
+  <!-- Vue Application Root -->
+  <div id="app">
+    <h1>To-Do List</h1>
+    
+    <!-- Input field for adding a new task, with v-model to bind input value to `newTask` -->
+    <!-- Adds task on pressing Enter -->
+    <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
+    
+    <!-- Button to add a new task to the list by calling `addTask` method -->
+    <button @click="addTask">Add Task</button>
+
+    <!-- Unordered list to display the tasks -->
+    <ul>
+      <!-- Loop through tasks using v-for and render each as a list item -->
+      <li v-for="(task, index) in tasks" :key="index">
+        <!-- Task text, styled conditionally with line-through if completed -->
+        <span :style="{ textDecoration: task.completed ? 'line-through' : 'none' }">{{ task.text }}</span>
+        
+        <!-- Button to toggle completion status of the task -->
+        <button @click="toggleComplete(index)">Toggle Complete</button>
+        
+        <!-- Button to delete the task from the list -->
+        <button @click="deleteTask(index)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // Vue instance to control the to-do list application
+    new Vue({
+      el: '#app', // Binds Vue instance to the #app div in HTML
+      data: {
+        // Holds the new task being added
+        newTask: '',
+        // Array of tasks, each with text and completed status
+        tasks: [
+          { text: 'Learn Vue.js', completed: false },
+          { text: 'Write a blog post', completed: false }
+        ]
+      },
+      methods: {
+        // Method to add a new task to the list
+        addTask() {
+          // Only add if the task text is not empty after trimming spaces
+          if (this.newTask.trim() !== '') {
+            // Push new task to the tasks array, mark as not completed
+            this.tasks.push({ text: this.newTask.trim(), completed: false });
+            // Clear the newTask input field
+            this.newTask = '';
+          }
+        },
+        // Method to toggle the completed status of a task
+        toggleComplete(index) {
+          // Set task's completed property to the opposite of its current state
+          this.tasks[index].completed = !this.tasks[index].completed;
+        },
+        // Method to delete a task from the list by its index
+        deleteTask(index) {
+          // Remove the task at the specified index from the tasks array
+          this.tasks.splice(index, 1);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
