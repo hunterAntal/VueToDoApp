@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue.js To-Do List</title>
-  <!-- Include Vue.js from a CDN for easy access to Vue functionalities -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js To-Do List</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+      /* Make body take up the full height of the viewport and apply flexbox */
+      body {
+        display: flex;
+        justify-content: center; /* Horizontal centering */
+        align-items: center; /* Vertical centering */
+        height: 100vh; /* Full height of the viewport */
+        margin: 0; /* Remove default body margin */
+        background-color: #f0f0f0; /* Optional: light background color */
+      }
+  
+      /* Center the app container and add some padding */
+      #app {
+        background-color: #ffffff; /* Optional: make app background white */
+        padding: 2rem;
+        border-radius: 8px; /* Rounded corners for aesthetics */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
+        text-align: center; /* Center text within the app */
+      }
+  
+      /* Styling for the buttons to make it visually appealing */
+      button {
+        margin-left: 10px; /* Add space between buttons */
+      }
+  
+      /* Optional: Add some space between tasks */
+      ul {
+        list-style-type: none; /* Remove bullet points */
+        padding: 10; /* Remove default padding */
+      }
+  
+      li {
+        margin-bottom: 20px; /* Space between tasks */
+      }
+    </style>
+  </head>
+  
 <body> 
   <!-- Vue Application Root -->
   <div id="app">
