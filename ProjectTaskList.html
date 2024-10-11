@@ -1,7 +1,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue.js To-Do List v-3.5</title>
+  <title>Vue.js To-Do List v-4</title>
   <!-- Favicon -->
   <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
   <!-- Google Font for Neo-brutalist Style -->
@@ -141,17 +141,17 @@
       Back to Organization View
     </button>
     
-    <h1>To-Do List 3.5</h1>
-    <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
-    <button @click="addTask">
+    <h1>To-Do List 4</h1>
+    <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addOrUpdateTask">
+    <button @click="addOrUpdateTask">
       <span class="material-icons">add</span>
-      Add Task
+      Add/Update Task
     </button>
 
     <ul>
       <li v-for="(task, index) in tasks" :key="index">
-        <!-- Task text is shown at the top of each list item -->
-        <span :style="{ textDecoration: task.completed ? 'line-through' : 'none' }">{{ task.text }}</span>
+        <!-- Editable task input field -->
+        <input type="text" v-model="tasks[index].text" @keyup.enter="addOrUpdateTask">
 
         <!-- Display due date if available -->
         <div v-if="task.dueDate" class="due-date">
@@ -171,10 +171,6 @@
           <button @click="setDueDate(index)">
             <span class="material-icons">event</span>
             Set Due Date
-          </button>
-          <button @click="editTask(index)">
-            <span class="material-icons">edit</span>
-            Edit Task
           </button>
         </div>
 
@@ -199,8 +195,8 @@
         ]
       },
       methods: {
-        // Method to add a new task to the list
-        addTask() {
+        // Method to add a new task or update an existing one
+        addOrUpdateTask() {
           // Only add if the task text is not empty after trimming spaces
           if (this.newTask.trim() !== '') {
             // Push new task to the tasks array, mark as not completed
@@ -227,13 +223,6 @@
         updateDueDate(event, index) {
           this.tasks[index].dueDate = event.target.value;
           this.tasks[index].showDatePicker = false; // Hide date picker after selecting a date
-        },
-        // Method to edit the task text
-        editTask(index) {
-          const updatedText = prompt("Edit the task:", this.tasks[index].text);
-          if (updatedText !== null && updatedText.trim() !== "") {
-            this.tasks[index].text = updatedText.trim();
-          }
         },
         // Method to go back to the organization view
         goBackToOrgView() {

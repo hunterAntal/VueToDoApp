@@ -6,6 +6,8 @@
   <title>Project Dashboard</title>
   <!-- Google Font for Neo-brutalist Style -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <style>
     /* Reset some default styles */
@@ -60,6 +62,9 @@
       padding: 15px;
       cursor: pointer;
       transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .project-card:hover {
@@ -75,6 +80,9 @@
       color: #fff;
       border: none;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .add-project:hover {
@@ -86,10 +94,14 @@
   <!-- Vue Application Root -->
   <div id="app">
     <h1>Organization Project Dashboard</h1>
-    <button class="add-project" @click="addProject">Add Project</button>
+    <button class="add-project" @click="addProject">
+      <span class="material-icons">add</span>
+      Add Project
+    </button>
 
     <div class="project-list">
       <div v-for="(project, index) in projects" :key="index" class="project-card" @click="viewProject(index)">
+        <span class="material-icons">folder</span>
         {{ project.name }}
       </div>
     </div>
