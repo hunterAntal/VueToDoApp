@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Dashboard</title>
+  <!-- Google Font for Neo-brutalist Style -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <style>
+    /* Reset some default styles */
+    body, h1, ul, li, button, input {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Modernize the body with brutalist styling */
+    body {
+      display: flex;
+      justify-content: center; /* Center the app horizontally */
+      align-items: center; /* Center the app vertically */
+      height: 100vh; /* Full viewport height */
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      background-color: #fafafa; /* Light gray background */
+      color: #111; /* Dark text for high contrast */
+    }
+
+    /* Main container for the app */
+    #app {
+      background-color: #ffffff; /* White background for contrast */
+      padding: 20px;
+      border: 3px solid #000; /* Thick, unapologetic borders */
+      border-radius: 8px;
+      text-align: center;
+      width: 90%; /* Extend width to occupy more horizontal space */
+      max-width: 800px; /* Set max width for larger screens */
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .project-card {
+      background-color: #f9f9f9;
+      border: 3px solid #000;
+      border-radius: 8px;
+      padding: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .project-card:hover {
+      background-color: #eaeaea;
+    }
+
+    .add-project {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .add-project:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <!-- Vue Application Root -->
+  <div id="app">
+    <h1>Organization Project Dashboard</h1>
+    <button class="add-project" @click="addProject">Add Project</button>
+
+    <div class="project-list">
+      <div v-for="(project, index) in projects" :key="index" class="project-card" @click="viewProject(index)">
+        {{ project.name }}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Vue instance to control the project dashboard application
+    new Vue({
+      el: '#app',
+      data: {
+        // Array of projects
+        projects: [
+          { name: 'Project A' },
+          { name: 'Project B' },
+          { name: 'Project C' }
+        ]
+      },
+      methods: {
+        // Method to add a new project
+        addProject() {
+          const newProjectName = prompt('Enter the new project name:');
+          if (newProjectName) {
+            this.projects.push({ name: newProjectName });
+          }
+        },
+        // Method to view an existing project
+        viewProject(index) {
+          alert(`Navigating to ${this.projects[index].name}`);
+          // Here, you would implement actual navigation logic to the project task page
+        }
+      }
+    });
+  </script>
+</body>
+</html>
