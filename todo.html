@@ -36,8 +36,8 @@
       border: 3px solid #000; /* Thick, unapologetic borders */
       border-radius: 8px;
       text-align: center;
-      width: 100%;
-      max-width: 400px;
+      width: 90%; /* Extend width to occupy more horizontal space */
+      max-width: 600px; /* Set max width for larger screens */
     }
 
     h1 {
@@ -47,9 +47,9 @@
     }
 
     input {
-      width: calc(100% - 120px);
+      width: calc(100% - 120px); /* Use more width for input */
       padding: 10px;
-      margin-right: 10px;
+      margin-bottom: 10px;
       font-size: 1rem;
       border: 3px solid #000;
       outline: none;
@@ -77,8 +77,8 @@
 
     li {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column; /* Stack elements vertically */
+      align-items: flex-start; /* Align items to the left */
       padding: 10px;
       margin-bottom: 10px;
       border: 3px solid #000;
@@ -90,12 +90,14 @@
     .button-container {
       display: flex;
       gap: 10px;
+      margin-top: 10px; /* Add spacing above buttons */
     }
 
     span {
-      flex: 1; /* Make sure the text takes up as much space as possible */
+      flex: 1; /* Take up available space */
       text-align: left;
       font-weight: 400;
+      width: 100%; /* Ensure it takes up full width */
     }
   </style>
 </head>
@@ -108,7 +110,10 @@
 
     <ul>
       <li v-for="(task, index) in tasks" :key="index">
+        <!-- Task text is shown at the top of each list item -->
         <span :style="{ textDecoration: task.completed ? 'line-through' : 'none' }">{{ task.text }}</span>
+        
+        <!-- Buttons are placed below the task name -->
         <div class="button-container">
           <button @click="toggleComplete(index)">Toggle Complete</button>
           <button @click="deleteTask(index)">Delete</button>
