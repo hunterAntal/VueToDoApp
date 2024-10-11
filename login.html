@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <!-- Google Font for Neo-brutalist Style -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <style>
+    /* Reset some default styles */
+    body, h1, input, button {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Modernize the body with brutalist styling */
+    body {
+      display: flex;
+      justify-content: center; /* Center the app horizontally */
+      align-items: center; /* Center the app vertically */
+      height: 100vh; /* Full viewport height */
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      background-color: #fafafa; /* Light gray background */
+      color: #111; /* Dark text for high contrast */
+    }
+
+    /* Main container for the app */
+    #app {
+      background-color: #ffffff; /* White background for contrast */
+      padding: 20px;
+      border: 3px solid #000; /* Thick, unapologetic borders */
+      border-radius: 8px;
+      text-align: center;
+      width: 90%; /* Extend width to occupy more horizontal space */
+      max-width: 400px; /* Set max width for larger screens */
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: calc(100% - 40px); /* Set width for input fields */
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border: 3px solid #000;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      background-color: #000; /* Dark button background */
+      color: #fff; /* White text for high contrast */
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    button:hover {
+      background-color: #333; /* Slight change for hover feedback */
+    }
+  </style>
+</head>
+<body>
+  <!-- Vue Application Root -->
+  <div id="app">
+    <h1>Login</h1>
+    <input type="text" v-model="username" placeholder="Username">
+    <input type="password" v-model="password" placeholder="Password">
+    <button @click="login">
+      <span class="material-icons">login</span>
+      Login
+    </button>
+  </div>
+
+  <script>
+    // Vue instance to control the login page
+    new Vue({
+      el: '#app',
+      data: {
+        // Username and password fields
+        username: '',
+        password: ''
+      },
+      methods: {
+        // Method to handle login
+        login() {
+          if (this.username.trim() !== '' && this.password.trim() !== '') {
+            alert(`Logging in as: ${this.username}`);
+          } else {
+            alert('Please enter both username and password.');
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
