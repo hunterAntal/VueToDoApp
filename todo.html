@@ -102,7 +102,7 @@
 <body>
   <!-- Vue Application Root -->
   <div id="app">
-    <h1>To-Do List</h1>
+    <h1>To-Do List 3.0</h1>
     <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
     <button @click="addTask">Add Task</button>
 
@@ -126,8 +126,9 @@
         newTask: '',
         // Array of tasks, each with text and completed status
         tasks: [
-          { text: 'Learn Vue.js', completed: false },
-          { text: 'Write a blog post', completed: false }
+          { text: 'Hello Kam and Jamie', completed: false },
+          { text: 'This is made with Vue.js', completed: false },
+          { text: 'Prototype 3', completed: false }
         ]
       },
       methods: {
