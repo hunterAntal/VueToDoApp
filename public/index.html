@@ -89,24 +89,41 @@
 
   <script>
     // Vue instance to control the login page
-    new Vue({
-      el: '#app',
-      data: {
-        // Username and password fields
-        username: '',
-        password: ''
-      },
-      methods: {
-        // Method to handle login
-        login() {
-          if (this.username.trim() !== '' && this.password.trim() !== '') {
-            alert(`Logging in as: ${this.username}`);
+new Vue({
+  el: '#app',
+  data: {
+    // Username and password fields
+    username: '',
+    password: ''
+  },
+  methods: {
+    // Method to handle login
+    login() {
+      if (this.username.trim() !== '' && this.password.trim() !== '') {
+        // Use fetch API to send login data to the server
+        fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username: this.username, password: this.password })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Login successful');
+            window.location.href = 'dashboard.html'; // Redirect to the dashboard page
           } else {
-            alert('Please enter both username and password.');
+            alert('Invalid username or password');
           }
-        }
+        });
+      } else {
+        alert('Please enter both username and password.');
       }
-    });
+    }
+  }
+});
+
   </script>
 </body>
 </html>

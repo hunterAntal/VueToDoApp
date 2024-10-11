@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Page</title>
+  <!-- Google Font for Neo-brutalist Style -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <style>
+    /* Reset some default styles */
+    body, h1, input, button, select {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Modernize the body with brutalist styling */
+    body {
+      display: flex;
+      justify-content: center; /* Center the app horizontally */
+      align-items: center; /* Center the app vertically */
+      height: 100vh; /* Full viewport height */
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      background-color: #fafafa; /* Light gray background */
+      color: #111; /* Dark text for high contrast */
+    }
+
+    /* Main container for the app */
+    #app {
+      background-color: #ffffff; /* White background for contrast */
+      padding: 20px;
+      border: 3px solid #000; /* Thick, unapologetic borders */
+      border-radius: 8px;
+      text-align: center;
+      width: 90%; /* Extend width to occupy more horizontal space */
+      max-width: 400px; /* Set max width for larger screens */
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      width: calc(100% - 40px); /* Set width for input fields */
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border: 3px solid #000;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      background-color: #000; /* Dark button background */
+      color: #fff; /* White text for high contrast */
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    button:hover {
+      background-color: #333; /* Slight change for hover feedback */
+    }
+  </style>
+</head>
+<body>
+  <!-- Vue Application Root -->
+  <div id="app">
+    <h1>Sign Up</h1>
+    <input type="text" v-model="name" placeholder="Full Name">
+    <input type="number" v-model="age" placeholder="Age">
+    <input type="text" v-model="username" placeholder="Username">
+    <input type="password" v-model="password" placeholder="Password">
+    <select v-model="role">
+      <option value="">Select Role</option>
+      <option value="Team Member">Team Member</option>
+      <option value="Project Lead">Project Lead</option>
+      <option value="Admin">Admin</option>
+    </select>
+    <button @click="signUp">
+      <span class="material-icons">person_add</span>
+      Sign Up
+    </button>
+  </div>
+
+  <script>
+    // Vue instance to control the sign-up page
+    new Vue({
+      el: '#app',
+      data: {
+        // User information fields
+        name: '',
+        age: '',
+        username: '',
+        password: '',
+        role: '',
+        // Mock database of users
+        users: []
+      },
+      methods: {
+        // Method to handle sign up
+        signUp() {
+          if (this.name.trim() && this.age && this.username.trim() && this.password.trim() && this.role) {
+            // Create user object and add to users array
+            const newUser = {
+              name: this.name.trim(),
+              age: this.age,
+              username: this.username.trim(),
+              password: this.password.trim(),
+              role: this.role
+            };
+            this.users.push(newUser);
+            alert(`User ${this.username} signed up successfully!`);
+
+            // Clear fields after successful sign-up
+            this.name = '';
+            this.age = '';
+            this.username = '';
+            this.password = '';
+            this.role = '';
+          } else {
+            alert('Please fill in all fields to sign up.');
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
