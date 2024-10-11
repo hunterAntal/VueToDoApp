@@ -107,11 +107,29 @@
       font-weight: 400;
       width: 100%; /* Ensure it takes up full width */
     }
+
+    .back-button {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      background-color: #000; /* Dark button background */
+      color: #fff; /* White text for high contrast */
+      border: none;
+      cursor: pointer;
+    }
+
+    .back-button:hover {
+      background-color: #333; /* Slight change for hover feedback */
+    }
   </style>
 </head>
 <body>
   <!-- Vue Application Root -->
   <div id="app">
+    <!-- Back to Organization View Button -->
+    <button class="back-button" @click="goBackToOrgView">Back to Organization View</button>
+    
     <h1>To-Do List 3.5</h1>
     <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
     <button @click="addTask">Add Task</button>
@@ -131,6 +149,7 @@
           <button @click="toggleComplete(index)">Toggle Complete</button>
           <button @click="deleteTask(index)">Delete</button>
           <button @click="setDueDate(index)">Set Due Date</button>
+          <button @click="editTask(index)">Edit Task</button>
         </div>
 
         <!-- Hidden date input for picking a due date -->
@@ -182,6 +201,17 @@
         updateDueDate(event, index) {
           this.tasks[index].dueDate = event.target.value;
           this.tasks[index].showDatePicker = false; // Hide date picker after selecting a date
+        },
+        // Method to edit the task text
+        editTask(index) {
+          const updatedText = prompt("Edit the task:", this.tasks[index].text);
+          if (updatedText !== null && updatedText.trim() !== "") {
+            this.tasks[index].text = updatedText.trim();
+          }
+        },
+        // Method to go back to the organization view
+        goBackToOrgView() {
+          window.location.href = 'dashboard.html';
         }
       }
     });
