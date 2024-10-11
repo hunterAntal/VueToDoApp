@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue.js To-Do List v-3.0</title>
+  <title>Vue.js To-Do List v-3.5</title>
   <!-- Google Font for Neo-brutalist Style -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -89,8 +87,16 @@
 
     .button-container {
       display: flex;
+      flex-wrap: wrap; /* Allow buttons to wrap if there isn't enough space */
       gap: 10px;
       margin-top: 10px; /* Add spacing above buttons */
+    }
+
+    .due-date {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #555;
     }
 
     span {
@@ -104,7 +110,7 @@
 <body>
   <!-- Vue Application Root -->
   <div id="app">
-    <h1>To-Do List 3.0</h1>
+    <h1>To-Do List 3.5</h1>
     <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
     <button @click="addTask">Add Task</button>
 
@@ -112,12 +118,21 @@
       <li v-for="(task, index) in tasks" :key="index">
         <!-- Task text is shown at the top of each list item -->
         <span :style="{ textDecoration: task.completed ? 'line-through' : 'none' }">{{ task.text }}</span>
+
+        <!-- Display due date if available -->
+        <div v-if="task.dueDate" class="due-date">
+          Due Date: {{ task.dueDate }}
+        </div>
         
         <!-- Buttons are placed below the task name -->
         <div class="button-container">
           <button @click="toggleComplete(index)">Toggle Complete</button>
           <button @click="deleteTask(index)">Delete</button>
+          <button @click="setDueDate(index)">Set Due Date</button>
         </div>
+
+        <!-- Hidden date input for picking a due date -->
+        <input v-show="task.showDatePicker" type="date" @change="updateDueDate($event, index)">
       </li>
     </ul>
   </div>
@@ -131,9 +146,9 @@
         newTask: '',
         // Array of tasks, each with text and completed status
         tasks: [
-          { text: 'Hello Kam and Jamie', completed: false },
-          { text: 'This is made with Vue.js', completed: false },
-          { text: 'Prototype 3', completed: false }
+          { text: 'Hello Kam and Jamie', completed: false, dueDate: null, showDatePicker: false },
+          { text: 'This is made with Vue.js', completed: false, dueDate: null, showDatePicker: false },
+          { text: 'Prototype 3', completed: false, dueDate: null, showDatePicker: false }
         ]
       },
       methods: {
@@ -142,7 +157,7 @@
           // Only add if the task text is not empty after trimming spaces
           if (this.newTask.trim() !== '') {
             // Push new task to the tasks array, mark as not completed
-            this.tasks.push({ text: this.newTask.trim(), completed: false });
+            this.tasks.push({ text: this.newTask.trim(), completed: false, dueDate: null, showDatePicker: false });
             // Clear the newTask input field
             this.newTask = '';
           }
@@ -156,6 +171,15 @@
         deleteTask(index) {
           // Remove the task at the specified index from the tasks array
           this.tasks.splice(index, 1);
+        },
+        // Method to toggle the due date picker for a task
+        setDueDate(index) {
+          this.tasks[index].showDatePicker = !this.tasks[index].showDatePicker;
+        },
+        // Method to update the due date when selected
+        updateDueDate(event, index) {
+          this.tasks[index].dueDate = event.target.value;
+          this.tasks[index].showDatePicker = false; // Hide date picker after selecting a date
         }
       }
     });
