@@ -1,98 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue.js To-Do List</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <style>
-      /* Make body take up the full height of the viewport and apply flexbox */
-      body {
-        display: flex;
-        justify-content: center; /* Horizontal centering */
-        align-items: center; /* Vertical centering */
-        height: 100vh; /* Full height of the viewport */
-        margin: 0; /* Remove default body margin */
-        background-color: #f0f0f0; /* Optional: light background color */
-      }
-  
-      /* Center the app container and add some padding */
-      #app {
-        background-color: #ffffff; /* Optional: make app background white */
-        padding: 2rem;
-        border-radius: 8px; /* Rounded corners for aesthetics */
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: shadow for depth */
-        text-align: center; /* Center text within the app */
-      }
-  
-      /* Styling for the buttons to make it visually appealing */
-      button {
-        margin-left: 10px; /* Add space between buttons */
-      }
-  
-      /* Optional: Add some space between tasks */
-      ul {
-        list-style-type: none; /* Remove bullet points */
-        padding: 10; /* Remove default padding */
-      }
-  
-      li {
-        margin-bottom: 10px; /* Space between tasks */
-      }
-          /* Styling the list items with Flexbox */
-      li {
-        display: flex; /* Makes the list item a flex container */
-        justify-content: space-between; /* Ensures content is spaced */
-        align-items: center; /* Vertically centers the text and buttons */
-        margin-bottom: 10px; /* Adds space between tasks */
-        padding: 5px; /* Padding for better aesthetics */
-        background-color: #f9f9f9; /* Light background color for items */
-        border-radius: 5px; /* Rounded corners for a clean look */
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js To-Do List v-3.0</title>
+  <!-- Google Font for Neo-brutalist Style -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <style>
+    /* Reset some default styles */
+    body, h1, ul, li, button, input {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      /* Container for the buttons within each list item */
-      .button-container {
-        display: flex; /* Align buttons in a row */
-        gap: 10px; /* Adds spacing between buttons */
-      }
+    /* Modernize the body with brutalist styling */
+    body {
+      display: flex;
+      justify-content: center; /* Center the app horizontally */
+      align-items: center; /* Center the app vertically */
+      height: 100vh; /* Full viewport height */
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      background-color: #fafafa; /* Light gray background */
+      color: #111; /* Dark text for high contrast */
+    }
 
-      /* Optional: Styling for the buttons to make them look nicer */
-      button {
-        padding: 5px 10px; /* Adds padding for clickability */
-        border: none; /* Remove default border */
-        border-radius: 5px; /* Rounded edges */
-        cursor: pointer; /* Pointer cursor on hover */
-      }
+    /* Main container for the app */
+    #app {
+      background-color: #ffffff; /* White background for contrast */
+      padding: 20px;
+      border: 3px solid #000; /* Thick, unapologetic borders */
+      border-radius: 8px;
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
 
-      button:hover {
-        background-color: #ddd; /* Add a light hover effect */
-      }
-    </style>
-  </head>
-  
-<body> 
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: calc(100% - 120px);
+      padding: 10px;
+      margin-right: 10px;
+      font-size: 1rem;
+      border: 3px solid #000;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 1rem;
+      font-weight: 700;
+      background-color: #000; /* Dark button background */
+      color: #fff; /* White text for high contrast */
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #333; /* Slight change for hover feedback */
+    }
+
+    ul {
+      list-style-type: none; /* Remove bullet points */
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 3px solid #000;
+      background-color: #f9f9f9; /* Light color for slight contrast */
+      border-radius: 4px;
+      font-weight: 400;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    span {
+      flex: 1; /* Make sure the text takes up as much space as possible */
+      text-align: left;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
   <!-- Vue Application Root -->
   <div id="app">
     <h1>To-Do List</h1>
-    
-    <!-- Input field for adding a new task, with v-model to bind input value to `newTask` -->
-    <!-- Adds task on pressing Enter -->
     <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
-    
-    <!-- Button to add a new task to the list by calling `addTask` method -->
     <button @click="addTask">Add Task</button>
 
-    <!-- Unordered list to display the tasks -->
     <ul>
-      <!-- Loop through tasks using v-for and render each as a list item -->
       <li v-for="(task, index) in tasks" :key="index">
-          <!-- Task text styled for completed and uncompleted states -->
-          <span :style="{ textDecoration: task.completed ? 'line-through' : 'none' }">{{ task.text }}</span>
-              
-          <!-- Container for buttons -->
-          <div class="button-container">
-            <button @click="toggleComplete(index)">Toggle Complete</button>
-            <button @click="deleteTask(index)">Delete</button>
+        <span :style="{ textDecoration: task.completed ? 'line-through' : 'none' }">{{ task.text }}</span>
+        <div class="button-container">
+          <button @click="toggleComplete(index)">Toggle Complete</button>
+          <button @click="deleteTask(index)">Delete</button>
+        </div>
       </li>
     </ul>
   </div>
@@ -106,7 +126,7 @@
         newTask: '',
         // Array of tasks, each with text and completed status
         tasks: [
-          { text: 'Welcome Kam and Jame to Vue.js', completed: false },
+          { text: 'Learn Vue.js', completed: false },
           { text: 'Write a blog post', completed: false }
         ]
       },
