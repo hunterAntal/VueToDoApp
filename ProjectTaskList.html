@@ -2,10 +2,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vue.js To-Do List v-3.5</title>
-   <!-- Favicon -->
-   <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
+  <!-- Favicon -->
+  <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
   <!-- Google Font for Neo-brutalist Style -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <style>
     /* Reset some default styles */
@@ -63,6 +65,9 @@
       color: #fff; /* White text for high contrast */
       border: none;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     button:hover {
@@ -117,6 +122,9 @@
       color: #fff; /* White text for high contrast */
       border: none;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .back-button:hover {
@@ -128,11 +136,17 @@
   <!-- Vue Application Root -->
   <div id="app">
     <!-- Back to Organization View Button -->
-    <button class="back-button" @click="goBackToOrgView">Back to Organization View</button>
+    <button class="back-button" @click="goBackToOrgView">
+      <span class="material-icons">arrow_back</span>
+      Back to Organization View
+    </button>
     
     <h1>To-Do List 3.5</h1>
     <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
-    <button @click="addTask">Add Task</button>
+    <button @click="addTask">
+      <span class="material-icons">add</span>
+      Add Task
+    </button>
 
     <ul>
       <li v-for="(task, index) in tasks" :key="index">
@@ -146,10 +160,22 @@
         
         <!-- Buttons are placed below the task name -->
         <div class="button-container">
-          <button @click="toggleComplete(index)">Toggle Complete</button>
-          <button @click="deleteTask(index)">Delete</button>
-          <button @click="setDueDate(index)">Set Due Date</button>
-          <button @click="editTask(index)">Edit Task</button>
+          <button @click="toggleComplete(index)">
+            <span class="material-icons">check_circle</span>
+            Toggle Complete
+          </button>
+          <button @click="deleteTask(index)">
+            <span class="material-icons">delete</span>
+            Delete
+          </button>
+          <button @click="setDueDate(index)">
+            <span class="material-icons">event</span>
+            Set Due Date
+          </button>
+          <button @click="editTask(index)">
+            <span class="material-icons">edit</span>
+            Edit Task
+          </button>
         </div>
 
         <!-- Hidden date input for picking a due date -->
