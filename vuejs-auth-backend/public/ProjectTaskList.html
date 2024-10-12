@@ -1,7 +1,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue.js To-Do List v-4</title>
+  <title>Vue.js To-Do List v-5</title>
   <!-- Favicon -->
   <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
   <!-- Google Font for Neo-brutalist Style -->
@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <style>
     /* Reset some default styles */
-    body, h1, ul, li, button, input, select {
+    body, h1, ul, li, button, input, select, textarea {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -22,7 +22,7 @@
       display: flex;
       justify-content: center; /* Center the app horizontally */
       align-items: center; /* Center the app vertically */
-      height: 100vh; /* Full viewport height */
+      min-height: auto; /* Full viewport height */
       margin: 0;
       font-family: 'Inter', sans-serif;
       font-size: 16px;
@@ -48,7 +48,7 @@
       margin-bottom: 20px;
     }
 
-    input, select {
+    input, select, textarea {
       width: calc(100% - 120px); /* Use more width for input */
       padding: 10px;
       margin-bottom: 10px;
@@ -106,6 +106,20 @@
       color: #555;
     }
 
+    .comments {
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .comment {
+      font-size: 0.9rem;
+      margin-top: 5px;
+      padding: 5px;
+      border: 1px solid #000;
+      border-radius: 4px;
+      background-color: #eaeaea;
+    }
+
     span {
       flex: 1; /* Take up available space */
       text-align: left;
@@ -141,7 +155,7 @@
       Back to Organization View
     </button>
     
-    <h1>To-Do List 4</h1>
+    <h1>To-Do List 5</h1>
     <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addOrUpdateTask">
     <button @click="addOrUpdateTask">
       <span class="material-icons">add</span>
@@ -185,6 +199,19 @@
 
         <!-- Hidden date input for picking a due date -->
         <input v-show="task.showDatePicker" type="date" @change="updateDueDate($event, index)">
+
+        <!-- Comments section -->
+        <div class="comments">
+          <h3>Comments:</h3>
+          <div v-for="(comment, cIndex) in task.comments" :key="cIndex" class="comment">
+            {{ comment }}
+          </div>
+          <textarea v-model="task.newComment" placeholder="Add a comment"></textarea>
+          <button @click="addComment(index)">
+            <span class="material-icons">comment</span>
+            Add Comment
+          </button>
+        </div>
       </li>
     </ul>
   </div>
@@ -196,11 +223,11 @@
       data: {
         // Holds the new task being added
         newTask: '',
-        // Array of tasks, each with text, completed status, priority, and due date
+        // Array of tasks, each with text, completed status, priority, due date, and comments
         tasks: [
-          { text: 'Hello Kam and Jamie', completed: false, dueDate: null, showDatePicker: false, priority: 'Medium' },
-          { text: 'This is made with Vue.js', completed: false, dueDate: null, showDatePicker: false, priority: 'Low' },
-          { text: 'First Web App', completed: false, dueDate: null, showDatePicker: false, priority: 'High' }
+          { text: 'Hello Kam and Jamie', completed: false, dueDate: null, showDatePicker: false, priority: 'Medium', comments: [], newComment: '' },
+          { text: 'This is made with Vue.js', completed: false, dueDate: null, showDatePicker: false, priority: 'Low', comments: [], newComment: '' },
+          { text: 'First Web App', completed: false, dueDate: null, showDatePicker: false, priority: 'High', comments: [], newComment: '' }
         ]
       },
       methods: {
@@ -209,7 +236,7 @@
           // Only add if the task text is not empty after trimming spaces
           if (this.newTask.trim() !== '') {
             // Push new task to the tasks array, mark as not completed
-            this.tasks.push({ text: this.newTask.trim(), completed: false, dueDate: null, showDatePicker: false, priority: 'Medium' });
+            this.tasks.push({ text: this.newTask.trim(), completed: false, dueDate: null, showDatePicker: false, priority: 'Medium', comments: [], newComment: '' });
             // Clear the newTask input field
             this.newTask = '';
           }
@@ -239,6 +266,13 @@
           const priorities = ['Low', 'Medium', 'High'];
           const nextPriorityIndex = (priorities.indexOf(currentPriority) + 1) % priorities.length;
           this.tasks[index].priority = priorities[nextPriorityIndex];
+        },
+        // Method to add a comment to a task
+        addComment(index) {
+          if (this.tasks[index].newComment.trim() !== '') {
+            this.tasks[index].comments.push(this.tasks[index].newComment.trim());
+            this.tasks[index].newComment = '';
+          }
         },
         // Method to go back to the organization view
         goBackToOrgView() {
