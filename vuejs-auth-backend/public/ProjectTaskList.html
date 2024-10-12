@@ -22,8 +22,8 @@
       display: flex;
       justify-content: center; /* Center the app horizontally */
       align-items: center; /* Center the app vertically */
-      min-height: auto; /* Full viewport height */
-      margin: 0;
+      min-height: 100vh; /* Use min-height to ensure it expands appropriately */
+      margin: 20px 0;
       font-family: 'Inter', sans-serif;
       font-size: 16px;
       line-height: 1.5;
@@ -90,6 +90,11 @@
       background-color: #f9f9f9; /* Light color for slight contrast */
       border-radius: 4px;
       font-weight: 400;
+      cursor: pointer;
+    }
+
+    li.expanded {
+      cursor: default;
     }
 
     .button-container {
@@ -163,54 +168,60 @@
     </button>
     
     <ul>
-      <li v-for="(task, index) in tasks" :key="index">
-        <!-- Editable task input field -->
-        <input type="text" v-model="tasks[index].text" @keyup.enter="addOrUpdateTask">
-
-        <!-- Display priority if available -->
-        <div v-if="task.priority" class="priority-level">
-          Priority: {{ task.priority }}
-        </div>
-
-        <!-- Display due date if available -->
-        <div v-if="task.dueDate" class="due-date">
-          Due Date: {{ task.dueDate }}
-        </div>
-        
-        <!-- Buttons are placed below the task name -->
-        <div class="button-container">
-          <button @click="toggleComplete(index)">
-            <span class="material-icons">check_circle</span>
-            Toggle Complete
-          </button>
-          <button @click="deleteTask(index)">
-            <span class="material-icons">delete</span>
-            Delete
-          </button>
-          <button @click="setDueDate(index)">
-            <span class="material-icons">event</span>
-            Set Due Date
-          </button>
-          <button @click="changePriority(index)">
-            <span class="material-icons">flag</span>
-            Change Priority
-          </button>
-        </div>
-
-        <!-- Hidden date input for picking a due date -->
-        <input v-show="task.showDatePicker" type="date" @change="updateDueDate($event, index)">
-
-        <!-- Comments section -->
-        <div class="comments">
-          <h3>Comments:</h3>
-          <div v-for="(comment, cIndex) in task.comments" :key="cIndex" class="comment">
-            {{ comment }}
+      <li v-for="(task, index) in tasks" :key="index" @click.self="toggleTaskDetails(index)" :class="{ expanded: task.isExpanded }">
+        <!-- Task name and due date are always visible -->
+        <div @click="toggleTaskDetails(index)">
+          <span>{{ task.text }}</span>
+          <div v-if="task.dueDate" class="due-date">
+            Due Date: {{ task.dueDate }}
           </div>
-          <textarea v-model="task.newComment" placeholder="Add a comment"></textarea>
-          <button @click="addComment(index)">
-            <span class="material-icons">comment</span>
-            Add Comment
-          </button>
+        </div>
+
+        <!-- Expanded task details -->
+        <div v-if="task.isExpanded" @click.self="toggleTaskDetails(index)">
+          <!-- Editable task input field -->
+          <input type="text" v-model="tasks[index].text" @keyup.enter="addOrUpdateTask">
+
+          <!-- Display priority if available -->
+          <div v-if="task.priority" class="priority-level">
+            Priority: {{ task.priority }}
+          </div>
+
+          <!-- Buttons are placed below the task name -->
+          <div class="button-container">
+            <button @click.stop="toggleComplete(index)">
+              <span class="material-icons">check_circle</span>
+              Toggle Complete
+            </button>
+            <button @click.stop="deleteTask(index)">
+              <span class="material-icons">delete</span>
+              Delete
+            </button>
+            <button @click.stop="setDueDate(index)">
+              <span class="material-icons">event</span>
+              Set Due Date
+            </button>
+            <button @click.stop="changePriority(index)">
+              <span class="material-icons">flag</span>
+              Change Priority
+            </button>
+          </div>
+
+          <!-- Hidden date input for picking a due date -->
+          <input v-show="task.showDatePicker" type="date" @change="updateDueDate($event, index)">
+
+          <!-- Comments section -->
+          <div class="comments">
+            <h3>Comments:</h3>
+            <div v-for="(comment, cIndex) in task.comments" :key="cIndex" class="comment">
+              {{ comment }}
+            </div>
+            <textarea v-model="task.newComment" placeholder="Add a comment"></textarea>
+            <button @click.stop="addComment(index)">
+              <span class="material-icons">comment</span>
+              Add Comment
+            </button>
+          </div>
         </div>
       </li>
     </ul>
@@ -225,9 +236,9 @@
         newTask: '',
         // Array of tasks, each with text, completed status, priority, due date, and comments
         tasks: [
-          { text: 'Hello Kam and Jamie', completed: false, dueDate: null, showDatePicker: false, priority: 'Medium', comments: [], newComment: '' },
-          { text: 'This is made with Vue.js', completed: false, dueDate: null, showDatePicker: false, priority: 'Low', comments: [], newComment: '' },
-          { text: 'First Web App', completed: false, dueDate: null, showDatePicker: false, priority: 'High', comments: [], newComment: '' }
+          { text: 'Hello Kam and Jamie', completed: false, dueDate: null, showDatePicker: false, priority: 'Medium', comments: [], newComment: '', isExpanded: false },
+          { text: 'This is made with Vue.js', completed: false, dueDate: null, showDatePicker: false, priority: 'Low', comments: [], newComment: '', isExpanded: false },
+          { text: 'First Web App', completed: false, dueDate: null, showDatePicker: false, priority: 'High', comments: [], newComment: '', isExpanded: false }
         ]
       },
       methods: {
@@ -236,10 +247,14 @@
           // Only add if the task text is not empty after trimming spaces
           if (this.newTask.trim() !== '') {
             // Push new task to the tasks array, mark as not completed
-            this.tasks.push({ text: this.newTask.trim(), completed: false, dueDate: null, showDatePicker: false, priority: 'Medium', comments: [], newComment: '' });
+            this.tasks.push({ text: this.newTask.trim(), completed: false, dueDate: null, showDatePicker: false, priority: 'Medium', comments: [], newComment: '', isExpanded: false });
             // Clear the newTask input field
             this.newTask = '';
           }
+        },
+        // Method to toggle the expanded state of a task
+        toggleTaskDetails(index) {
+          this.tasks[index].isExpanded = !this.tasks[index].isExpanded;
         },
         // Method to toggle the completed status of a task
         toggleComplete(index) {
