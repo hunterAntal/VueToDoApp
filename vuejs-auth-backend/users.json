@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "name": "Hunter",
+    "age": "21",
+    "username": "admin",
+    "password": "420",
+    "role": "Admin"
+  }
+]
