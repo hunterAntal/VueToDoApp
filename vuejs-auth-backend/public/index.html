@@ -73,6 +73,15 @@
     button:hover {
       background-color: #333; /* Slight change for hover feedback */
     }
+
+    .signup-button {
+      margin-top: 15px;
+      background-color: #007bff; /* Blue button background for sign-up */
+    }
+
+    .signup-button:hover {
+      background-color: #0056b3; /* Darker blue for hover feedback */
+    }
   </style>
 </head>
 <body>
@@ -85,45 +94,52 @@
       <span class="material-icons">login</span>
       Login
     </button>
+    <button class="signup-button" @click="goToSignUp">
+      <span class="material-icons">person_add</span>
+      Sign Up
+    </button>
   </div>
 
   <script>
     // Vue instance to control the login page
-new Vue({
-  el: '#app',
-  data: {
-    // Username and password fields
-    username: '',
-    password: ''
-  },
-  methods: {
-    // Method to handle login
-    login() {
-      if (this.username.trim() !== '' && this.password.trim() !== '') {
-        // Use fetch API to send login data to the server
-        fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username: this.username, password: this.password })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert('Login successful');
-            window.location.href = 'dashboard.html'; // Redirect to the dashboard page
+    new Vue({
+      el: '#app',
+      data: {
+        // Username and password fields
+        username: '',
+        password: ''
+      },
+      methods: {
+        // Method to handle login
+        login() {
+          if (this.username.trim() !== '' && this.password.trim() !== '') {
+            // Use fetch API to send login data to the server
+            fetch('/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ username: this.username, password: this.password })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('Login successful');
+                window.location.href = 'dashboard.html'; // Redirect to the dashboard page
+              } else {
+                alert('Invalid username or password');
+              }
+            });
           } else {
-            alert('Invalid username or password');
+            alert('Please enter both username and password.');
           }
-        });
-      } else {
-        alert('Please enter both username and password.');
+        },
+        // Method to go to the sign-up page
+        goToSignUp() {
+          window.location.href = 'signup.html';
+        }
       }
-    }
-  }
-});
-
+    });
   </script>
 </body>
 </html>

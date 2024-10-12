@@ -106,14 +106,12 @@
         username: '',
         password: '',
         role: '',
-        // Mock database of users
-        users: []
       },
       methods: {
         // Method to handle sign up
         signUp() {
           if (this.name.trim() && this.age && this.username.trim() && this.password.trim() && this.role) {
-            // Create user object and add to users array
+            // Create user object
             const newUser = {
               name: this.name.trim(),
               age: this.age,
@@ -121,15 +119,23 @@
               password: this.password.trim(),
               role: this.role
             };
-            this.users.push(newUser);
-            alert(`User ${this.username} signed up successfully!`);
-
-            // Clear fields after successful sign-up
-            this.name = '';
-            this.age = '';
-            this.username = '';
-            this.password = '';
-            this.role = '';
+            // Send signup data to the server
+            fetch('/signup', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(newUser)
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('User signed up successfully!');
+                window.location.href = 'index.html'; // Redirect to the login page
+              } else {
+                alert(data.message);
+              }
+            });
           } else {
             alert('Please fill in all fields to sign up.');
           }
