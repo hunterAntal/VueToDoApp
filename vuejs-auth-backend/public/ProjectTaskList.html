@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <style>
     /* Reset some default styles */
-    body, h1, ul, li, button, input {
+    body, h1, ul, li, button, input, select {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -48,7 +48,7 @@
       margin-bottom: 20px;
     }
 
-    input {
+    input, select {
       width: calc(100% - 120px); /* Use more width for input */
       padding: 10px;
       margin-bottom: 10px;
@@ -147,11 +147,16 @@
       <span class="material-icons">add</span>
       Add/Update Task
     </button>
-
+    
     <ul>
       <li v-for="(task, index) in tasks" :key="index">
         <!-- Editable task input field -->
         <input type="text" v-model="tasks[index].text" @keyup.enter="addOrUpdateTask">
+
+        <!-- Display priority if available -->
+        <div v-if="task.priority" class="priority-level">
+          Priority: {{ task.priority }}
+        </div>
 
         <!-- Display due date if available -->
         <div v-if="task.dueDate" class="due-date">
@@ -172,6 +177,10 @@
             <span class="material-icons">event</span>
             Set Due Date
           </button>
+          <button @click="changePriority(index)">
+            <span class="material-icons">flag</span>
+            Change Priority
+          </button>
         </div>
 
         <!-- Hidden date input for picking a due date -->
@@ -187,11 +196,11 @@
       data: {
         // Holds the new task being added
         newTask: '',
-        // Array of tasks, each with text and completed status
+        // Array of tasks, each with text, completed status, priority, and due date
         tasks: [
-          { text: 'Hello Kam and Jamie', completed: false, dueDate: null, showDatePicker: false },
-          { text: 'This is made with Vue.js', completed: false, dueDate: null, showDatePicker: false },
-          { text: 'First Web App', completed: false, dueDate: null, showDatePicker: false }
+          { text: 'Hello Kam and Jamie', completed: false, dueDate: null, showDatePicker: false, priority: 'Medium' },
+          { text: 'This is made with Vue.js', completed: false, dueDate: null, showDatePicker: false, priority: 'Low' },
+          { text: 'First Web App', completed: false, dueDate: null, showDatePicker: false, priority: 'High' }
         ]
       },
       methods: {
@@ -200,7 +209,7 @@
           // Only add if the task text is not empty after trimming spaces
           if (this.newTask.trim() !== '') {
             // Push new task to the tasks array, mark as not completed
-            this.tasks.push({ text: this.newTask.trim(), completed: false, dueDate: null, showDatePicker: false });
+            this.tasks.push({ text: this.newTask.trim(), completed: false, dueDate: null, showDatePicker: false, priority: 'Medium' });
             // Clear the newTask input field
             this.newTask = '';
           }
@@ -223,6 +232,13 @@
         updateDueDate(event, index) {
           this.tasks[index].dueDate = event.target.value;
           this.tasks[index].showDatePicker = false; // Hide date picker after selecting a date
+        },
+        // Method to change the priority of a task
+        changePriority(index) {
+          const currentPriority = this.tasks[index].priority;
+          const priorities = ['Low', 'Medium', 'High'];
+          const nextPriorityIndex = (priorities.indexOf(currentPriority) + 1) % priorities.length;
+          this.tasks[index].priority = priorities[nextPriorityIndex];
         },
         // Method to go back to the organization view
         goBackToOrgView() {
